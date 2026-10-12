@@ -57,6 +57,60 @@ Setup registers REA with your agent and installs matching workflow instructions.
 
 ## Quick start
 
+### Groundstate fork — Windows and Linux/macOS launchers
+
+Install **Node.js 22.x (22.19+), 24.x (24.11+), or 26+** and npm first.
+For the development toolchain, the repository pins Node in `.nvmrc` and npm
+in `package.json#packageManager`. Download and extract this fork, or clone
+`https://github.com/GroundstateTech/rea.git`.
+
+- **Windows:** double-click `run.bat`.
+- **Linux / macOS:** open a terminal in the extracted folder and run `bash run.sh`.
+  Git clones also support `./run.sh`.
+
+The launchers install locked dependencies when needed, build the local fork,
+and start REA's existing setup wizard. Review and approve changes in that
+wizard, then restart your selected agent. Windows keeps the window open after
+an argument-free launch so you can read the result. REA is a CLI/MCP tool;
+these launchers do not start a browser application.
+
+Pass any REA command to run it against the local fork:
+
+```bat
+run.bat --help
+run.bat analyze-javascript-application "D:\apps\example" --json
+```
+
+```bash
+bash run.sh --help
+bash run.sh analyze-javascript-application "/path/to/app" --json
+```
+
+The first dependency installation requires internet. Later launches use the
+existing dependencies and cached build, refreshing them when inputs change.
+Build/install progress goes to stderr, preserving CLI JSON and MCP stdout.
+Native analysis still requires the providers described below.
+
+**Connect an agent specifically to this fork:** the upstream setup wizard may
+register the published `rea-agents` package. To use your checkout instead, first
+run a launcher with `--help` to prepare it, then use this manual MCP entry with
+an absolute path to your extracted folder:
+
+```json
+{
+  "mcpServers": {
+    "rea": {
+      "command": "node",
+      "args": ["/absolute/path/to/rea/scripts/rea.mjs", "mcp"]
+    }
+  }
+}
+```
+
+On Windows use a path such as `"C:/tools/rea/scripts/rea.mjs"`; use the absolute
+path to `node.exe` for `command` if your agent cannot find Node. After updating
+this fork, rerun a launcher to rebuild, then restart your agent.
+
 ### Set up your agent
 
 With Node.js and npm installed, run:

@@ -3,3 +3,7 @@
 
 # Windows command fixtures retain their native line endings.
 *.cmd text eol=crlf
+
+# Launchers retain platform-appropriate line endings.
+*.bat text eol=crlf
+*.sh text eol=lf
